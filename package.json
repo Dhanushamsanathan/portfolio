@@ -1,0 +1,17 @@
+{
+  "name": "dhanush-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "check": "node --check src/main.js && node --check src/content.js",
+    "test:browser": "node scripts/check-browser.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.65.0",
+    "vite": "^8.3.8"
+  }
+}
