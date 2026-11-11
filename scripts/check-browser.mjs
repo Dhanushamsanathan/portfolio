@@ -22,7 +22,7 @@ async function check(name, callback) {
 async function a11y(name) {
   await check(name, async () => {
     const report = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
-    assert.deepEqual(report.violations.map(violation => ({ id: violation.id, impact: violation.impact, nodes: violation.nodes.slice(0, 6).map(node => ({ target: node.target, summary: node.failureSummary })) })), []);
+    assert.deepEqual(report.violations.map(violation => ({ id: violation.id, impact: violation.impact, nodes: violation.nodes.map(node => ({ target: node.target, summary: node.failureSummary })) })), []);
   });
 }
 
@@ -86,8 +86,10 @@ try {
 
   await check('Email copy writes the correct address', async () => {
     await page.getByRole('button', { name: 'Copy email address', exact: true }).click();
+    await page.locator('.toast.is-visible').waitFor();
     assert.equal(await page.evaluate(() => navigator.clipboard.readText()), 'dhanushamsanathan@gmail.com');
     assert.match(await page.locator('.toast').innerText(), /copied/);
+    await page.locator('.toast').waitFor({ state: 'hidden' });
   });
   await check('Project brief validates and constructs an email draft', async () => {
     await page.getByRole('button', { name: 'Have a project? Put a brief together' }).click();
